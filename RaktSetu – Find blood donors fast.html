@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>RaktSetu – Find blood donors fast</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@500;700;800&family=DM+Sans:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#FBF7F7;--surface:#fff;--ink:#22161A;--mute:#7A6A6E;--line:#EDE1E3;--red:#D3122F;--wine:#4B0816;--blush:#FCE4E7;--green:#16875A;--greenbg:#DDF3E9;--stage:#E9DEE0;
+--shadow:0 10px 30px rgba(75,8,22,.12);box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#1A1013;--surface:#27181C;--ink:#F7E9EB;--mute:#B09DA1;--line:#3A262B;--blush:#3D1620;--greenbg:#12372A;--stage:#0F0809;--shadow:0 10px 30px rgba(0,0,0,.5)}}
+:root[data-theme="dark"]{--bg:#1A1013;--surface:#27181C;--ink:#F7E9EB;--mute:#B09DA1;--line:#3A262B;--blush:#3D1620;--greenbg:#12372A;--stage:#0F0809;--shadow:0 10px 30px rgba(0,0,0,.5)}
+*{box-sizing:border-box;margin:0;-webkit-tap-highlight-color:transparent}
+html,body{height:100%}
+body{background:var(--stage);color:var(--ink);font:400 15px/1.45 'DM Sans',system-ui,sans-serif;display:flex;align-items:center;justify-content:center}
+h1,h2,h3,.disp{font-family:'Bricolage Grotesque','DM Sans',sans-serif;letter-spacing:-.02em}
+button{font:inherit;color:inherit;border:0;background:none;cursor:pointer}
+button:focus-visible,input:focus-visible{outline:3px solid var(--red);outline-offset:2px}
+.phone{width:100%;max-width:400px;height:100%;max-height:820px;background:var(--bg);position:relative;overflow:hidden;display:flex;flex-direction:column}
+@media(min-width:520px){.phone{border-radius:38px;box-shadow:0 30px 80px rgba(0,0,0,.35);border:8px solid #140a0c}}
+.scroll{flex:1;overflow-y:auto;padding:20px 20px 110px}
+.row{display:flex;align-items:center;gap:12px}.sp{justify-content:space-between}
+.mute{color:var(--mute);font-size:13px}
+.top h1{font-size:26px;line-height:1.1}
+.avatar{width:42px;height:42px;border-radius:50%;background:var(--wine);color:#fff;display:grid;place-items:center;font-weight:700}
+/* SOS hero */
+.sos{margin-top:18px;background:var(--wine);color:#fff;border-radius:28px;padding:22px;position:relative;overflow:hidden}
+.sos h2{font-size:30px;line-height:1.05;max-width:11ch}
+.sos p{opacity:.8;margin:8px 0 18px;max-width:24ch}
+.sos .drop{position:absolute;right:-18px;top:-10px;width:150px;opacity:.95}
+.sos .drop::after{content:"";position:absolute;inset:30% 30% 20% 30%;border-radius:50%;background:var(--red);filter:blur(30px);z-index:-1;animation:pulse 2.2s ease-in-out infinite}
+@keyframes pulse{50%{transform:scale(1.6);opacity:.4}}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;background:var(--red);color:#fff;font-weight:700;padding:15px 22px;border-radius:16px;min-height:50px}
+.btn.full{width:100%}.btn.ghost{background:var(--blush);color:var(--red)}
+.btn:active{transform:scale(.97)}
+.stats{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:14px}
+.stat{background:var(--surface);border:1px solid var(--line);border-radius:20px;padding:14px}
+.stat b{font:800 28px 'Bricolage Grotesque';display:block;line-height:1}
+.sec{margin:24px 0 10px;font-size:19px}
+/* cards */
+.card{background:var(--surface);border:1px solid var(--line);border-radius:20px;padding:14px;margin-bottom:10px}
+.bg{flex:none;width:52px;height:52px;border-radius:16px;background:var(--blush);color:var(--red);display:grid;place-items:center;font:800 19px 'Bricolage Grotesque'}
+.bg.sm{width:44px;height:44px;font-size:16px;border-radius:14px}
+.grow{flex:1;min-width:0}.grow b{display:block}
+.tag{font-size:12px;font-weight:700;padding:3px 9px;border-radius:99px;background:var(--blush);color:var(--red)}
+.tag.ok{background:var(--greenbg);color:var(--green)}
+.mini{padding:10px 14px;border-radius:12px;background:var(--red);color:#fff;font-weight:700;font-size:14px;min-height:40px}
+.mini.line{background:transparent;color:var(--red);border:1.5px solid var(--red)}
+/* chips & grid */
+.chips{display:flex;gap:8px;overflow-x:auto;padding:4px 0 10px;scrollbar-width:none}
+.chip{flex:none;padding:9px 16px;border-radius:99px;border:1.5px solid var(--line);background:var(--surface);font-weight:700}
+.chip[aria-pressed=true]{background:var(--red);border-color:var(--red);color:#fff}
+.grid8{display:grid;grid-template-columns:repeat(4,1fr);gap:10px}
+.grid8 .chip{border-radius:16px;padding:16px 0;font:800 20px 'Bricolage Grotesque';text-align:center}
+label.l{display:block;font-weight:700;margin:20px 0 8px}
+input.f{width:100%;padding:15px;border-radius:14px;border:1.5px solid var(--line);background:var(--surface);color:var(--ink);font:inherit}
+.seg{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.seg .chip{border-radius:16px;padding:14px;text-align:left;line-height:1.25}
+.seg small{display:block;font-weight:400;opacity:.8}
+.step{display:flex;align-items:center;gap:18px}
+.step button{width:48px;height:48px;border-radius:14px;background:var(--blush);color:var(--red);font:700 24px 'DM Sans'}
+.step b{font:800 32px 'Bricolage Grotesque';min-width:40px;text-align:center}
+/* nav */
+nav{position:absolute;left:0;right:0;bottom:0;background:var(--surface);border-top:1px solid var(--line);display:grid;grid-template-columns:1fr 1fr 74px 1fr 1fr;align-items:end;padding:8px 8px calc(10px + env(safe-area-inset-bottom,0px))}
+nav button{display:flex;flex-direction:column;align-items:center;gap:3px;font-size:12px;color:var(--mute);padding:6px 0;font-weight:500}
+nav button[aria-current=page]{color:var(--red);font-weight:700}
+nav svg{width:24px;height:24px}
+nav .fab{width:64px;height:64px;border-radius:50%;background:var(--red);color:#fff;margin:-30px auto 0;box-shadow:0 8px 20px rgba(211,18,47,.45);justify-content:center;border:5px solid var(--bg)}
+/* radar */
+.radar{width:190px;height:190px;margin:10px auto 6px;position:relative;display:grid;place-items:center}
+.radar i{position:absolute;inset:0;border-radius:50%;border:2px solid var(--red);opacity:0;animation:ring 2.4s infinite}
+.radar i:nth-child(2){animation-delay:.8s}.radar i:nth-child(3){animation-delay:1.6s}
+@keyframes ring{0%{transform:scale(.3);opacity:.9}100%{transform:scale(1);opacity:0}}
+.radar .core{width:76px;height:76px;border-radius:50%;background:var(--red);display:grid;place-items:center;z-index:1}
+.big{font:800 54px 'Bricolage Grotesque';text-align:center;line-height:1}
+/* ring */
+.elig{display:flex;align-items:center;gap:16px}
+.ringc{width:84px;height:84px;border-radius:50%;background:conic-gradient(var(--red) var(--p),var(--line) 0);display:grid;place-items:center;flex:none}
+.ringc span{width:64px;height:64px;border-radius:50%;background:var(--surface);display:grid;place-items:center;font:800 20px 'Bricolage Grotesque'}
+.sw{width:54px;height:32px;border-radius:99px;background:var(--line);position:relative;flex:none;transition:.2s}
+.sw::after{content:"";position:absolute;top:4px;left:4px;width:24px;height:24px;border-radius:50%;background:#fff;transition:.2s}
+.sw[aria-checked=true]{background:var(--green)}.sw[aria-checked=true]::after{left:26px}
+.toast{position:absolute;left:20px;right:20px;bottom:96px;background:var(--ink);color:var(--bg);padding:14px 16px;border-radius:14px;font-weight:500;opacity:0;transform:translateY(10px);transition:.25s;pointer-events:none;z-index:5}
+.toast.on{opacity:1;transform:none}
+.back{margin-bottom:6px;color:var(--mute);font-weight:700;padding:6px 0}
+@media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+@media(max-width:360px){.scroll{padding:16px 16px 110px}.top h1{font-size:22px}.sos h2{font-size:26px}.sos .drop{width:120px}.grid8{gap:8px}.grid8 .chip{font-size:18px}}
+@media(max-height:700px){.sos{padding:16px}.radar{width:150px;height:150px;margin-top:0}.big{font-size:44px}.scroll{padding-top:14px}}
+@media(min-width:900px){body{background:radial-gradient(circle at 25% 15%,#6a1226,var(--stage) 65%)}.phone{height:min(820px,94vh)}}
+</style>
+</head>
+<body>
+<div class="phone" id="app">
+  <div class="scroll" id="view"></div>
+  <nav id="nav"></nav>
+  <div class="toast" id="toast" role="status"></div>
+</div>
+<script>
+const G=['A+','A−','B+','B−','O+','O−','AB+','AB−'];
+const DONORS=[
+ {n:'Rohan Mehta',g:'O−',d:0.8,a:'Sector 14',last:'4 months ago',on:1},
+ {n:'Priya Sharma',g:'B+',d:1.4,a:'DLF Phase 3',last:'5 months ago',on:1},
+ {n:'Aman Verma',g:'A+',d:2.1,a:'Sohna Road',last:'3 months ago',on:1},
+ {n:'Sana Khan',g:'O+',d:2.6,a:'Sector 56',last:'8 months ago',on:1},
+ {n:'Vikram Singh',g:'AB+',d:3.3,a:'Golf Course Rd',last:'6 months ago',on:0},
+ {n:'Neha Gupta',g:'B−',d:3.9,a:'Sector 29',last:'1 year ago',on:1},
+ {n:'Karan Malhotra',g:'A−',d:4.5,a:'Palam Vihar',last:'7 months ago',on:1}];
+const REQS=[
+ {g:'B+',h:'Medanta, Sector 38',u:2,t:'12 min ago',c:1},
+ {g:'O−',h:'Fortis Memorial, Sec 44',u:1,t:'40 min ago',c:1},
+ {g:'A+',h:'Artemis Hospital, Sec 51',u:3,t:'2 hrs ago',c:0}];
+const S={tab:'home',grp:'B+',units:2,urg:'crit',hosp:'',filter:'All',donor:true,notified:0,reg:{n:'Arjun Rao',g:'O+',a:'Sector 29',last:'Over 6 months'}};
+const $=s=>document.querySelector(s),v=$('#view');
+const ic={home:'<path d="M3 11l9-8 9 8v9a1 1 0 01-1 1h-5v-6H9v6H4a1 1 0 01-1-1z"/>',people:'<circle cx="9" cy="8" r="4"/><path d="M2 21c0-4 3-6 7-6s7 2 7 6M17 4a4 4 0 010 8M22 21c0-3-2-5-4-5.5"/>',list:'<path d="M8 6h13M8 12h13M8 18h13M3 6h.01M3 12h.01M3 18h.01"/>',user:'<circle cx="12" cy="8" r="4"/><path d="M4 21c0-4 3.5-6 8-6s8 2 8 6"/>',plus:'<path d="M12 5v14M5 12h14"/>'};
+const svg=k=>`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">${ic[k]}</svg>`;
+const dropSvg=(w,c='#D3122F')=>`<svg viewBox="0 0 64 80" width="${w}"><path d="M32 2C32 2 6 34 6 52a26 26 0 0052 0C58 34 32 2 32 2z" fill="${c}"/><path d="M20 54a12 12 0 009 11" stroke="#fff" stroke-opacity=".45" stroke-width="4" fill="none" stroke-linecap="round"/></svg>`;
+function keep(){const a=$('#rn'),b=$('#ra');if(a)S.reg.n=a.value;if(b)S.reg.a=b.value}
+function toast(m){const t=$('#toast');t.textContent=m;t.classList.add('on');clearTimeout(t._t);t._t=setTimeout(()=>t.classList.remove('on'),2200)}
+function go(tab){S.tab=tab;render();v.scrollTop=0}
+function nav(){
+ const b=(k,l,i)=>`<button data-go="${k}" ${(S.tab===k||(k==='me'&&S.tab==='register'))?'aria-current="page"':''}>${svg(i)}${l}</button>`;
+ $('#nav').innerHTML=b('home','Home','home')+b('donors','Donors','people')+
+ `<button class="fab" data-go="request" aria-label="Request blood">${dropSvg(24,'#fff')}</button>`+b('reqs','Requests','list')+b('me','Profile','user');
+}
+const reqCard=r=>`<div class="card row"><div class="bg">${r.g}</div><div class="grow"><b>${r.h}</b><span class="mute">${r.u} unit${r.u>1?'s':''} · ${r.t}</span></div>${r.c?'<span class="tag">Critical</span>':''}<button class="mini" data-act="help">Help</button></div>`;
+const donorCard=d=>`<div class="card row"><div class="bg sm">${d.g}</div><div class="grow"><b>${d.n}</b><span class="mute">${d.a}, ${d.d} km · gave ${d.last}</span></div><button class="mini ${d.on?'':'line'}" data-act="call" data-n="${d.n}">${d.on?'Call':'Message'}</button></div>`;
+const V={
+home:()=>`<div class="top row sp"><div><span class="mute">Good evening, Arjun</span><h1>Be someone’s<br>reason to live.</h1></div><div class="avatar">A</div></div>
+ <div class="sos"><div class="drop">${dropSvg(150)}</div><h2>Need blood right now?</h2><p>We alert matching donors within 5 km in seconds.</p><button class="btn" data-go="request">Request blood</button></div>
+ <div class="stats"><div class="stat"><b>128</b><span class="mute">donors near you</span></div><div class="stat"><b>9</b><span class="mute">open requests today</span></div></div>
+ <h3 class="sec">Needed near you</h3>${REQS.map(reqCard).join('')}`,
+donors:()=>`<h1 class="disp" style="font-size:26px">Find a donor</h1><p class="mute">Sorted by distance from Gurugram Sector 29</p>
+ <div class="chips" style="margin-top:12px">${['All',...G].map(g=>`<button class="chip" aria-pressed="${S.filter===g}" data-f="${g}">${g}</button>`).join('')}</div>
+ ${(DONORS.filter(d=>S.filter==='All'||d.g===S.filter).map(donorCard).join(''))||`<div class="card"><b>No ${S.filter} donors within 5 km</b><p class="mute">Send a request and we’ll alert donors who register nearby.</p><button class="btn full" style="margin-top:12px" data-go="request">Request ${S.filter}</button></div>`}`,
+request:()=>`<button class="back" data-go="home">‹ Back</button><h1 class="disp" style="font-size:28px">Request blood</h1><p class="mute">Takes under a minute. Donors are alerted right after you send.</p>
+ <label class="l">Blood group needed</label><div class="grid8">${G.map(g=>`<button class="chip" aria-pressed="${S.grp===g}" data-g="${g}">${g}</button>`).join('')}</div>
+ <label class="l">Units required</label><div class="step"><button data-u="-1" aria-label="Fewer">−</button><b>${S.units}</b><button data-u="1" aria-label="More">+</button></div>
+ <label class="l" for="h">Hospital</label><input class="f" id="h" placeholder="e.g. Medanta, Sector 38" value="${S.hosp}">
+ <label class="l">How urgent?</label><div class="seg"><button class="chip" aria-pressed="${S.urg==='crit'}" data-urg="crit">Critical<small>Needed in 2 hours</small></button><button class="chip" aria-pressed="${S.urg==='day'}" data-urg="day">Planned<small>Within 24 hours</small></button></div>
+ <button class="btn full" style="margin-top:26px" data-act="send">Alert nearby donors</button>`,
+sent:()=>`<div class="radar"><i></i><i></i><i></i><div class="core">${dropSvg(34,'#fff')}</div></div>
+ <div class="big" id="cnt">0</div><p class="mute" style="text-align:center;margin:6px 0 18px">${S.grp} donors alerted within 5 km</p>
+ <div class="card row" style="background:var(--greenbg);border:0"><div class="grow"><b style="color:var(--green)">Request sent to ${S.hosp||'your hospital'}</b><span class="mute">${S.units} unit${S.units>1?'s':''} · ${S.urg==='crit'?'Critical':'Planned'}. We’ll notify you when someone accepts.</span></div></div>
+ <h3 class="sec">Nearest available now</h3>${DONORS.filter(d=>d.on).slice(0,3).map(donorCard).join('')}
+ <button class="btn ghost full" data-go="home">Back to home</button>`,
+register:()=>`<button class="back" data-go="me">‹ Back</button><h1 class="disp" style="font-size:28px">Become a donor</h1><p class="mute">One profile can reach a family in an emergency.</p>
+ <label class="l" for="rn">Full name</label><input class="f" id="rn" value="${S.reg.n}">
+ <label class="l">Your blood group</label><div class="grid8">${G.map(g=>`<button class="chip" aria-pressed="${S.reg.g===g}" data-rg="${g}">${g}</button>`).join('')}</div>
+ <label class="l" for="ra">Area</label><input class="f" id="ra" value="${S.reg.a}">
+ <label class="l">Last donated</label><div class="chips" style="flex-wrap:wrap">${['Never','Under 3 months','3–6 months','Over 6 months'].map(x=>`<button class="chip" aria-pressed="${S.reg.last===x}" data-ld="${x}">${x}</button>`).join('')}</div>
+ <div class="card row sp" style="margin-top:8px"><div><b>Alert me for urgent requests</b><span class="mute">Only within 5 km, only matching groups</span></div><button class="sw" role="switch" aria-checked="${S.donor}" aria-label="Alert me for urgent requests" data-act="sw2"></button></div>
+ <button class="btn full" style="margin-top:18px" data-act="regsave">Save donor profile</button>`,
+reqs:()=>`<h1 class="disp" style="font-size:26px">Requests</h1><p class="mute">Open requests in your area</p><div style="margin-top:14px">${REQS.map(reqCard).join('')}</div>`,
+me:()=>`<div class="row"><div class="avatar" style="width:64px;height:64px;font-size:24px">A</div><div><h1 class="disp" style="font-size:24px">${S.reg.n}</h1><span class="mute">Gurugram, ${S.reg.a}</span></div><div class="bg" style="margin-left:auto">${S.reg.g}</div></div>
+ <div class="card row sp" style="margin-top:20px"><div><b>Available to donate</b><span class="mute">${S.donor?'Nearby requests can reach you':'You won’t receive alerts'}</span></div><button class="sw" role="switch" aria-checked="${S.donor}" aria-label="Available to donate" data-act="sw"></button></div>
+ <div class="card elig"><div class="ringc" style="--p:74%"><span>23d</span></div><div><b>Next donation in 23 days</b><span class="mute">Whole blood needs a 3-month gap. Last gave on 28 Aug.</span></div></div>
+ <button class="card row sp" data-go="register" style="text-align:left"><div><b>Donor details</b><span class="mute">${S.reg.g} · ${S.reg.a} · tap to edit</span></div><span aria-hidden="true">›</span></button>
+ <div class="stats"><div class="stat"><b>6</b><span class="mute">donations</span></div><div class="stat"><b>18</b><span class="mute">lives helped</span></div></div>`
+};
+function render(){
+ v.innerHTML=V[S.tab]();nav();
+ if(S.tab==='sent'){let n=0,max=S.urg==='crit'?24:15;const el=$('#cnt'),t=setInterval(()=>{n+=1;el.textContent=n;if(n>=max)clearInterval(t)},90)}
+}
+document.addEventListener('click',e=>{
+ const t=e.target.closest('button');if(!t)return;const d=t.dataset;
+ if(d.go){const h=$('#h');if(h)S.hosp=h.value;return go(d.go)}
+ if(d.f){S.filter=d.f;return render()}
+ if(d.g){S.grp=d.g;S.hosp=($('#h')||{}).value||S.hosp;return render()}
+ if(d.u){S.units=Math.min(10,Math.max(1,S.units+ +d.u));S.hosp=($('#h')||{}).value||S.hosp;return render()}
+ if(d.urg){S.urg=d.urg;S.hosp=($('#h')||{}).value||S.hosp;return render()}
+ if(d.act==='send'){S.hosp=$('#h').value.trim();if(!S.hosp){$('#h').focus();return toast('Add the hospital name so donors know where to go')}return go('sent')}
+ if(d.act==='call')return toast('Calling '+d.n+'…');
+ if(d.act==='help')return toast('Thanks! The family has been told you’re coming.');
+ if(d.act==='sw'){S.donor=!S.donor;render()}
+ if(d.rg){keep();S.reg.g=d.rg;return render()}
+ if(d.ld){keep();S.reg.last=d.ld;return render()}
+ if(d.act==='sw2'){keep();S.donor=!S.donor;return render()}
+ if(d.act==='regsave'){keep();if(!S.reg.n.trim()||!S.reg.a.trim())return toast('Add your name and area so donors can be matched');go('me');return toast('You’re registered as a '+S.reg.g+' donor')}
+});
+render();
+</script>
+</body>
+</html>
